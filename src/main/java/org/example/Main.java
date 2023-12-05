@@ -6,19 +6,9 @@ import java.rmi.RemoteException;
 public class Main {
     public static void main(String[] args) {
         MulticastServer multicastServer = new MulticastServer();
-        MulticastClient multicastClient = new MulticastClient();
 
         Thread multicastThread = new Thread(multicastServer::run);
         multicastThread.start();
-
-        try {
-            Thread.sleep(2000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-
-        Thread clientThread = new Thread(multicastClient::run);
-        clientThread.start();
 
         Thread cryptoServiceThread = new Thread(() -> {
             try {
@@ -40,6 +30,18 @@ public class Main {
             }
         });
         httpServerThread.start();
+
+
+        Client client = new Client();
+
+        try {
+            Thread.sleep(10000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        Thread clientThread = new Thread(client::run);
+        clientThread.start();
 
     }
 }
